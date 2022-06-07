@@ -1,0 +1,134 @@
+// 使用 @angular/material 命名為 mat
+@use '@angular/material' as mat;
+@import '~@angular/material/theming';
+//mixin 載入 core
+@include mat.core();
+
+$violet: rgba(94, 114, 228, 0.95);
+
+
+// 1. 調色盤
+// 預設為 mat.$indigo-palette
+$indigo-palette: (
+  50: $violet,
+  100: #c5cae9,
+  200: #9fa8da,
+  300: #7986cb,
+  contrast: (50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: white,
+  )
+);
+// 預設為 mat.$indigo-palette
+$pinki-palette: (
+  50: blue,
+  100: red,
+  200: #9fa8da,
+  300: #7986cb,
+  contrast: (50: white,
+    100: rgba(0, 0, 0, 1),
+    200: rgba(black, 0.87),
+    300: white,
+  )
+);
+
+// 2. 宣告變數(淺色、深色)
+// 定義淺色主體
+$light-theme: mat.define-light-theme((color: (primary:mat.define-palette($indigo-palette),
+        accent:mat.define-palette($indigo-palette),
+      )));
+// 定義深色主題
+$dark-theme: mat.define-dark-theme((color: (primary: mat.define-palette($indigo-palette, 50),
+        accent: mat.define-palette($pinki-palette, 100),
+      )));
+
+// 3. 載入調色盤
+
+// ⭐️ 設定深色主題
+//核心
+@include mat.core-theme($dark-theme);
+//按鈕主題
+@include mat.button-theme($dark-theme);
+//input 顏色
+@include mat.input-color($dark-theme);
+@include mat.form-field-color($dark-theme);
+@include mat.slide-toggle-color($dark-theme);
+
+
+
+// ⭐️ 設定淺色主題 body class 命名為 my-light-theme
+.my-light-theme {
+  //核心
+  @include mat.core-color($light-theme);
+  //input 顏色
+  @include mat.button-color($light-theme);
+  @include mat.input-color($light-theme);
+}
+
+
+//input 外框目前無法用 theme 換色
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #ced4da
+}
+
+.mat-form-field {
+  width: 100%;
+
+  label {
+    font-size: 18px;
+  }
+}
+
+.mat-form-field-label {
+
+  transform: translateY(-0.5em) scale(1);
+  color: #495057;
+}
+
+.mat-form-field-placeholder {
+  color: #495057;
+}
+
+.mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+.mat-slide-toggle {
+  .mat-slide-toggle-content {
+    font-size: 0.875rem;
+    color: #344767;
+    font-weight: normal;
+  }
+
+  .mat-slide-toggle-bar {
+    border: 1px solid rgba(33, 37, 41, 0.1);
+    background-color: rgba(33, 37, 41, 0.1);
+    height: 22px;
+    width: 38px;
+    border-radius: 99px;
+  }
+
+  .mat-slide-toggle-thumb {
+    background-color: #fff;
+    position: relative;
+    top: 5px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+  }
+
+  &.mat-checked {
+    &:not(.mat-disabled) {
+      .mat-slide-toggle-bar {
+        background-color: $violet;
+        border: none;
+      }
+
+      .mat-slide-toggle-thumb {
+        top: 6px;
+        background-color: #fff;
+      }
+    }
+  }
+}
